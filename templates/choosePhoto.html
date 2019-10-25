@@ -1,0 +1,18 @@
+  <ion-popover-view class="fit">
+    <ion-header-bar>
+      <h1 class="title">{{'label.photofrom' | translate}}</h1>
+    </ion-header-bar>
+    <ion-content scroll="false">
+        <div class="list">
+		  <a class="item item-icon-left" href="" ng-click="takePhoto()">
+		    <i class="icon ion-camera positive"></i>
+		    {{'label.fromcamera' | translate}}
+		  </a>
+		  <a class="item item-icon-left" href="" ng-click="useExistingPhoto()">
+		    <i class="icon ion-images positive"></i>
+		    {{'label.fromgallery' | translate}}
+		  </a>
+        </div>
+    </ion-content>
+  </ion-popover-view>
+        

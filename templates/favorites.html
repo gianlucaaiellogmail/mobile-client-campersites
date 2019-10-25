@@ -1,0 +1,50 @@
+<ion-view view-title="Aree Sosta Preferite">
+    <ion-content padding="false" overflow-scroll="true">
+		<div class="list card" ng-if="!stopPoints.length">
+			<div class="item item-icon-left item-text-wrap">
+				<i class="icon ion-ios-information-outline"></i>
+			    <h2>{{'label.no_stoppoints_found' | translate}}</h2>
+				<p>{{'desc.no_stoppoints_found' | translate}}</p>
+			</div>
+		</div>
+		<div class="row row-no-padding row-wrap responsive-sm" ng-if="stopPoints.length">
+			<div class="col col-50" ng-repeat="stopPoint in stopPoints">
+				<div class="list card" ng-repeat="stopPoint in stopPoints">
+					<a href="" class="item item-avatar-left item-icon-right" ng-click="goDetail(stopPoint.stopId)"
+						ng-class="{CA:'balanced-border', PS:'calm-border', 'AC':'energized-border', 'CS':'assertive-border', 'AA':'wood-border'}[stopPoint.typeId]">
+				    	<img ng-src="img/icons/{{::stopPoint.typeId}}.png">
+					    <h2 ng-bind-html="stopPoint.description"></h2>
+					    <p ng-bind-html="stopPoint.locality"></p>
+					    <i class="icon fill-icon ion-chevron-right"
+						    ng-class="{CA:'balanced', PS:'calm', 'AC':'energized', 'CS':'assertive', 'AA':'wood'}[stopPoint.typeId]"></i>
+					</a>
+					<div class="item item-text-wrap"
+						ng-class="{CA:'balanced-border', PS:'calm-border', 'AC':'energized-border', 'CS':'assertive-border', 'AA':'wood'}[stopPoint.typeId]">
+					    <p>{{'label.notte' | translate}}: <label class="{{getNotteClass(stopPoint)}}">{{getNotte(stopPoint)}}</label></p>
+					    <p>{{'label.prezzo' | translate}}: <label class="{{getPrezzoClass(stopPoint)}}">{{getPrezzo(stopPoint) | currency:'€'}}</label></p>
+					    <p>{{'label.chiusura' | translate}}: <label class="assertive">{{getChiusura(stopPoint)}}</label></p>
+					    <p>
+					    	<img ng-if="stopPoint.acqua" src="img/icons/acqua.png" class="padding-right">
+					    	<img ng-if="stopPoint.scaricoCassetta" src="img/icons/scaricoCassetta.png" class="padding-right">
+					    	<img ng-if="stopPoint.scaricoPozzetto" src="img/icons/scaricoPozzetto.png" class="padding-right">
+					    	<img ng-if="stopPoint.corrente" src="img/icons/corrente.png" class="padding-right">
+					    	<img ng-if="stopPoint.accessoCustoditov" src="img/icons/accessoCustodito.png" class="padding-right">
+					    	<img ng-if="stopPoint.videosorveglianza" src="img/icons/videosorveglianza.png" class="padding-right">
+					    	<img ng-if="stopPoint.illuminazione" src="img/icons/illuminazione.png" class="padding-right">
+					    	<img ng-if="stopPoint.ombra" src="img/icons/ombra.png" class="padding-right">
+					    	<img ng-if="stopPoint.docce" src="img/icons/docce.png" class="padding-right">
+					    	<img ng-if="stopPoint.bagni" src="img/icons/bagni.png" class="padding-right">
+					    	<img ng-if="stopPoint.bambini" src="img/icons/bambini.png" class="padding-right">
+					    	<img ng-if="stopPoint.picnic" src="img/icons/picnic.png" class="padding-right">
+					    	<img ng-if="stopPoint.animali" src="img/icons/animali.png" class="padding-right">
+					    	<img ng-if="stopPoint.fermata" src="img/icons/fermata.png" class="padding-right">
+					    	<img ng-if="stopPoint.wifi" src="img/icons/wifi.png" class="padding-right">
+					    </p>
+					    <span class="badge badge-positive">{{getRating(stopPoint)}}</span>
+					    <span class="item-note" ng-if="stopPoint.distance">{{::stopPoint.distance + ' Km'}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

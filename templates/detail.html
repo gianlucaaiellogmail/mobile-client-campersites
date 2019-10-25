@@ -1,0 +1,185 @@
+<ion-view view-title="{{'label.dettaglio' | translate}}">
+	<ion-nav-back-button>
+	</ion-nav-back-button>
+	<ion-nav-buttons side="secondary">
+		<button class="button button-icon icon ion-edit light" ng-if="$storage.user" ng-click="doModify()"></button>
+	</ion-nav-buttons>
+	<ion-tabs view-title="Dettaglio Area Sosta" class="tabs-color-positive tabs-icon-top tabs-top">
+		<ion-tab title="{{'label.informazioni' | translate}}" icon="ion-location">
+			<ion-view view-title="Info Area Sosta">
+			    <ion-content padding="false" overflow-scroll="true">
+<!-- 			    	<pre>{{stopPoint | json}}</pre> -->
+					<div class="list card">
+						<div class="item item-avatar-left item-text-wrap">
+					    	<img ng-src="img/icons/{{::stopPoint.typeId}}.png">
+						    <h2 ng-bind-html="stopPoint.description"></h2>
+						    <p ng-bind-html="stopPoint.locality"></p>
+						</div>
+					</div>
+					<div class="list card">
+						<a href="" class="item item-icon-left item-text-wrap" ng-if="!downloadPhotos.length && !downloading" ng-click="scaricaFoto(stopPoint.stopId)">
+							 <i class="icon ion-ios-information-outline"></i>
+						    <h2>{{'label.fotononscaricate' | translate}}</h2>
+						    <p>{{'desc.fotononscaricate' | translate}}</p>
+						</a>
+						<div class="item item-image" ng-if="downloadPhotos.length">
+							<ion-slide-box does-continue="true" auto-play="true">
+							  <ion-slide ng-repeat="photo in downloadPhotos">
+								<div ng-style="{'border': '0px', 'border-radius': '3px', 'text-align': 'center', 'background-color': 'rgb(255, 255, 255)'}">
+									<img ng-if="!noimage" src="http://www.campersites.info:8000/{{::stopPoint.stopId}}/{{photo.newName}}" height="256px" width="100%" />
+									<img ng-if="noimage" src="http://www.campersites.info/no_image" height="256px" width="100%" />
+								</div>
+							  </ion-slide>
+							</ion-slide-box>
+						</div>
+						<a class="item item-icon-left" href="" ng-click="addPhoto($event)" ng-if="$storage.user">
+							<i class="icon ion-image positive"></i>
+							{{'label.addphoto' | translate}}
+						</a>
+					</div>
+					<div class="list card">
+						<div class="item">
+							<p style="margin: 0;">{{'label.rating' | translate}}: <strong>{{getRating()}}%</strong></p>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width: {{getRating()}}%"></div>
+							</div>
+						</div>
+						<div class="item item-divider" ng-class="{'item-icon-right' : howRated != null}" ng-if="$storage.user">
+							<i ng-if="howRated > 0" class="icon ion-thumbsup balanced"></i>
+							<i ng-if="howRated == 0" class="icon ion-thumbsdown assertive"></i>
+							{{'label.tuorating' | translate}}
+						</div>
+						<a class="item item-icon-left" href="" ng-click="like()" ng-if="$storage.user && !(howRated > 0)">
+							<i class="icon ion-thumbsup balanced"></i>
+							{{'label.like' | translate}}
+						</a>
+						<a class="item item-icon-left" href="" ng-click="unLike()" ng-if="$storage.user && !(howRated == 0)">
+							<i class="icon ion-thumbsdown assertive"></i>
+							{{'label.unlike' | translate}}
+						</a>
+					</div>
+					<div class="list card" ng-if="$storage.user">
+						<a class="item item-icon-left" href="" ng-if="!preferito" ng-click="addRemovePreferiti()">
+							<i class="icon ion-heart balanced"></i>
+							{{'label.addpreferiti' | translate}}
+							<span class="badge badge-balanced">{{stopPoint.totPreferito}}</span>
+						</a>
+						<a class="item item-icon-left" href="" ng-if="preferito" ng-click="addRemovePreferiti()">
+							<i class="icon ion-heart-broken assertive"></i>
+							{{'label.removepreferiti' | translate}}
+							<span class="badge badge-assertive">{{stopPoint.totPreferito}}</span>
+						</a>
+					</div>
+					<div class="list card">
+						<a class="item item-icon-left" href="" ng-click="sendToNavigator(stopPoint.latitude, stopPoint.longitude)">
+							<i class="icon ion-navigate positive"></i>
+							{{'label.toNavigator' | translate}}
+						</a>
+						<a class="item item-icon-left" ng-href="tel:{{::stopPoint.telefono}}" ng-if="stopPoint.telefono">
+							<i class="icon ion-social-whatsapp positive"></i>
+							{{'label.toTelefono' | translate}}
+						</a>
+						<a class="item item-icon-left" href="" ng-click="openBrowser(stopPoint.homepage, '_system', 'location=yes');" ng-if="stopPoint.homepage">
+							<i class="icon ion-ios-world positive"></i>
+							{{'label.toHomepage' | translate}}
+						</a>
+						<a class="item item-icon-left" href="" ng-click="toShare()">
+							<i class="icon ion-android-share-alt positive"></i>
+							{{'label.toShare' | translate}}
+						</a>
+					</div>
+					<div class="list card">
+						<div class="item item-divider">
+							{{'label.informazioni' | translate}}
+						</div>
+						<div class="item">
+							<p style="line-height: 32px;" ng-if="stopPoint.chiusura"><img class="myicon" src="img/icons/chiusura.png">
+						    	{{'label.chiusura' | translate}}: <label>{{::stopPoint.chiusura}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoNotturno != null"><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoNotturno' | translate}}: <label class="{{stopPoint.prezzoNotturno > 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.prezzoNotturno == 0 ? 'label.gratuito' : stopPoint.prezzoNotturno}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoOrario != null"><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoOrario' | translate}}: <label class="{{stopPoint.prezzoOrario > 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.prezzoOrario == 0 ? 'label.gratuito' : stopPoint.prezzoOrario}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoGiornaliero != null"><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoGiornaliero' | translate}}: <label class="{{stopPoint.prezzoGiornaliero > 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.prezzoGiornaliero == 0 ? 'label.gratuito' : stopPoint.prezzoGiornaliero}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoSettimanale != null"><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoSettimanale' | translate}}: <label class="{{stopPoint.prezzoSettimanale > 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.prezzoSettimanale == 0 ? 'label.gratuito' : stopPoint.prezzoSettimanale}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoParticolare" != null><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoParticolare' | translate}}: <label class="{{stopPoint.prezzoParticolare != '' ? 'assertive' : 'balanced'}}">{{::stopPoint.prezzoParticolare}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.acqua != null"><img class="myicon" src="img/icons/acqua.png">
+						    	{{'label.acqua' | translate}}: <label class="{{stopPoint.acqua == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.acqua == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.scaricoCassetta != null"><img class="myicon" src="img/icons/scaricoCassetta.png">
+						    	{{'label.scaricoCassetta' | translate}}: <label class="{{stopPoint.scaricoCassetta == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.scaricoCassetta == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.scaricoPozzetto != null"><img class="myicon" src="img/icons/scaricoPozzetto.png">
+						    	{{'label.scaricoPozzetto' | translate}}: <label class="{{stopPoint.scaricoPozzetto == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.scaricoPozzetto == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoService" != null><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoService' | translate}}: <label class="{{stopPoint.prezzoService != '' ? 'assertive' : 'balanced'}}">{{::stopPoint.prezzoService}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.corrente != null"><img class="myicon" src="img/icons/corrente.png">
+						    	{{'label.corrente' | translate}}: <label class="{{stopPoint.corrente == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.corrente == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.prezzoCorrente" != null><img class="myicon" src="img/icons/prezzo.png">
+						    	{{'label.prezzoCorrente' | translate}}: <label class="{{stopPoint.prezzoCorrente != '' ? 'assertive' : 'balanced'}}">{{::stopPoint.prezzoCorrente}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.tipoPiazzola"><img class="myicon" src="img/icons/tipoPiazzola.png">
+						    	{{'label.tipoPiazzola' | translate}}: <label translate>{{'label.'+stopPoint.tipoPiazzola}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.accessoCustodito != null"><img class="myicon" src="img/icons/accessoCustodito.png">
+						    	{{'label.accessoCustodito' | translate}}: <label class="{{stopPoint.accessoCustodito == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.accessoCustodito == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.videosorveglianza != null"><img class="myicon" src="img/icons/videosorveglianza.png">
+						    	{{'label.videosorveglianza' | translate}}: <label class="{{stopPoint.videosorveglianza == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.videosorveglianza == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.notte != null"><img class="myicon" src="img/icons/notte.png">
+						    	{{'label.notte' | translate}}: <label class="{{stopPoint.notte == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.notte == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.illuminazione != null"><img class="myicon" src="img/icons/illuminazione.png">
+						    	{{'label.illuminazione' | translate}}: <label class="{{stopPoint.illuminazione == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.illuminazione == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.ombra != null"><img class="myicon" src="img/icons/ombra.png">
+						    	{{'label.ombra' | translate}}: <label class="{{stopPoint.ombra == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.ombra == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.posti != null"><img class="myicon" src="img/icons/posti.png">
+						    	{{'label.posti' | translate}}: <label class="{{stopPoint.posti != '' ? 'assertive' : 'balanced'}}">{{::stopPoint.posti}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.maxHH != null"><img class="myicon" src="img/icons/maxHH.png">
+						    	{{'label.maxHH' | translate}}: <label class="{{stopPoint.maxHH != '' ? 'assertive' : 'balanced'}}">{{::stopPoint.maxHH}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.docce != null"><img class="myicon" src="img/icons/docce.png">
+						    	{{'label.docce' | translate}}: <label class="{{stopPoint.docce == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.docce == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.bagni != null"><img class="myicon" src="img/icons/bagni.png">
+						    	{{'label.bagni' | translate}}: <label class="{{stopPoint.bagni == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.bagni == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.bambini != null"><img class="myicon" src="img/icons/bambini.png">
+						    	{{'label.bambini' | translate}}: <label class="{{stopPoint.bambini == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.bambini == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.picnic != null"><img class="myicon" src="img/icons/picnic.png">
+						    	{{'label.picnic' | translate}}: <label class="{{stopPoint.picnic == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.picnic == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.animali != null"><img class="myicon" src="img/icons/animali.png">
+						    	{{'label.animali' | translate}}: <label class="{{stopPoint.animali == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.animali == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.fermata != null"><img class="myicon" src="img/icons/fermata.png">
+						    	{{'label.fermata' | translate}}: <label class="{{stopPoint.fermata == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.fermata == 0 ? 'label.no' : 'label.si'}}</label></p>
+							<p style="line-height: 32px;" ng-if="stopPoint.wifi != null"><img class="myicon" src="img/icons/wifi.png">
+						    	{{'label.wifi' | translate}}: <label class="{{stopPoint.wifi == 0 ? 'assertive' : 'balanced'}}" translate>{{stopPoint.wifi == 0 ? 'label.no' : 'label.si'}}</label></p>
+						</div>
+					</div>
+					<div class="list card" ng-if="$storage.user">
+						<a class="item item-icon-left" href="" ng-click="addReview()">
+							<i class="icon ion-chatbox-working positive"></i>
+							{{'label.addreview' | translate}}
+						</a>
+					</div>
+					<div class="list card" ng-if="stopPoint.reviews">
+						<div class="item item-divider item-text-wrap" ng-repeat-start="review in stopPoint.reviews" translate="label.recensionedel" translate-value-datareview="{{::review.modified | date}}">
+						</div>
+						<div class="item item-text-wrap" ng-repeat-end>
+						    {{review.review}}
+						</div>
+					</div>
+				</ion-content>
+			</ion-view>
+		</ion-tab>
+		<ion-tab title="{{'label.mappa' | translate}}" icon="ion-map">
+			<ion-view view-title="Mappa Area Sosta">
+				<ion-content id="mapContent" scroll="false" padding="false" class="has-header has-tabs-top">
+					<div class="list card" ng-if="!mapOnlineOK">
+						<a href="" class="item item-icon-left item-text-wrap" ng-click="mapOnline()">
+							<i class="icon ion-ios-information-outline"></i>
+						    <h2>{{'label.mapOnlineOK' | translate}}</h2>
+						    <p>{{'desc.mapOnlineOK' | translate}}</p>
+						</a>
+					</div>
+					<div ng-controller="detailMapController" ng-if="mapOnlineOK" data-tap-disabled="true" style="height: 100%; width: 100%; margin: 0px; padding: 0px;">
+						<leaflet defaults="defaultsMap" center="centerMap" layers="layersMap" controls="controlsMap" markers="markersMap" maxbounds="maxboundsMap" style="position: absolute; top: 0; bottom: 0; right: 0; left: 0;"></leaflet>
+			    	</div>
+				</ion-content>
+			</ion-view>
+		</ion-tab>
+	</ion-tabs>
+</ion-view>

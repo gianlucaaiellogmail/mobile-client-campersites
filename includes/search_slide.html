@@ -1,0 +1,26 @@
+	<div class="row row-no-padding responsive-sm">
+		<div class="col jumbotron" style="{{getBackground()}}">
+		  <div class="container">
+			<div class="well" style="background-color: rgba(245, 245, 245, 0.4);">
+				<div angucomplete-alt id="Cerca"
+			    	placeholder="{{'label.cerca' | translate}}"
+			    	text-searching="{{'label.cercando' | translate}}"
+			    	text-no-results="{{'label.no_results' | translate}}"
+			        type="search"
+			        pause="500"
+			        selected-object="doSearch"
+			        local-data="stopPoints"
+			        search-fields=description,locality
+			        title-field="description"
+			        description-field="locality"
+			        minlength="3"
+			        match-class="positive"
+			        input-changed="searchStopPoints"
+			        disable-input="false"
+			        clear-selected="true"
+			        template-url="templates/search.html"></div>
+			</div>
+		  </div> <!-- /container -->
+		</div>
+	</div>
+ 

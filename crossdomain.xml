@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd">
+<cross-domain-policy>
+  <allow-access-from domain="*.google.com" secure="false" />
+  <allow-access-from domain="*.facebook.com" secure="false" />
+  <allow-access-from domain="*.doubleclick.net" secure="false" />
+  <allow-access-from domain="*.google-analytics.com" secure="false" />
+</cross-domain-policy>

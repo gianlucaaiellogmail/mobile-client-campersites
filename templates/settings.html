@@ -1,0 +1,46 @@
+<ion-view view-title="{{'label.impostazioni' | translate}}">
+	<ion-content padding="true" class="has-header" overflow-scroll="true">
+		<div class="list">
+			<div class="item item-divider" translate>label.maxdistanza</div>
+			<label class="item range range-positive" ng-if="!isWinPhone">
+				<span class="positive">10</span>
+				<input type="range" name="distance" min="10" max="30" ng-model="$storage.distanza" ng-value="{{$storage.distanza}}" step="1">
+				<span class="positive">30</span>
+			</label>
+			<label class="item item-input" ng-if="isWinPhone">
+				<input type="number" name="distance" ng-model="$storage.distanza" ng-value="{{$storage.distanza}}" maxlength="2" min="10" max="30" step="1">
+			</label>
+		</div>
+		<div class="list">
+			<div class="item item-divider" translate>label.mapsSetting</div>
+			<ion-toggle name="mapsSetting" ng-model="$storage.mapsSetting" toggle-class="toggle-positive" ng-if="!isWinPhone"><span translate>{{$storage.mapsSetting == 1 ? 'label.online' : 'label.offline'}}</span></ion-toggle>
+			<label class="item item-input" ng-if="isWinPhone">
+			    <select ng-model="$storage.mapsSetting" ng-options="mapsOption.shade as mapsOption.name for mapsOption in mapsOptions"></select>
+		  	</label>
+		</div>
+		<div class="list">
+			<div class="item item-divider" translate>label.sharePosition</div>
+			<ion-toggle name="sharePosition" ng-model="$storage.sharePosition" ng-change="toggleSharePosition()" toggle-class="toggle-positive" ng-if="!isWinPhone"><span translate>{{$storage.sharePosition == 1 ? 'label.si' : 'label.no'}}</span></ion-toggle>
+			<label class="item item-input" ng-if="isWinPhone">
+			    <select ng-model="$storage.sharePosition" ng-options="positionOption.shade as positionOption.name for positionOption in positionsOptions"></select>
+		  	</label>
+		</div>
+		<div class="list">
+			<div class="item item-divider" translate>label.navigatorpreferred</div>
+			<ion-radio name="navigatore" ng-model="$storage.navigatore" value="Altro" ng-if="!isWinPhone"><span translate>label.altro</span></ion-radio>
+			<ion-radio name="navigatore" ng-model="$storage.navigatore" value="GoogleMaps" ng-if="!isWinPhone">Google Maps</ion-radio>
+			<ion-radio name="navigatore" ng-model="$storage.navigatore" value="Sygic" ng-if="!isWinPhone">Sygic</ion-radio>
+			<ion-radio name="navigatore" ng-model="$storage.navigatore" value="Navigon" ng-if="!isWinPhone">Navigon</ion-radio>
+			<ion-radio name="navigatore" ng-model="$storage.navigatore" value="TomTom" ng-if="!isWinPhone">TomTom</ion-radio>
+			<label class="item item-input" ng-if="isWinPhone">
+			    <select ng-model="$storage.navigatore" ng-options="navOption.shade as navOption.name for navOption in navOptions"></select>
+		  	</label>
+		</div>
+		<div class="list">
+			<label class="item item-text-wrap">
+		   		<p>CamperSites - &copy; Gianluca Aiello - V 5.1.0</p>
+		   		<p>{{'label.statistiche' | translate}}</p>
+			</label>
+		</div>
+	</ion-content>
+</ion-view>

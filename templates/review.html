@@ -1,0 +1,14 @@
+<ion-view view-title="{{'label.addreview' | translate}}">
+	<ion-content padding="true" class="has-header" overflow-scroll="true">
+        <div class="list">
+        	<form name="formReview" novalidate="novalidate">
+				<label class="item item-input item-stacked-label" ng-class="{'has-error-lr': formReview.Review.$invalid && formReview.$submitted, 'valid-lr': formReview.Review.$valid && formReview.$submitted}">
+					<span class="input-label" translate>label.review</span>
+					<textarea name="Review" ng-model="$parent.newReview.testo" ng-maxlength="2000" required></textarea>
+				</label>
+				<div class="form-errors" ng-show="formReview.Review.$error && formReview.$submitted" ng-messages="formReview.Review.$error" ng-messages-include="includes/form_errors.html"></div>
+				<button class="button button-block button-positive" ng-click="confirmReview(formReview)" translate>button.conferma</button>
+        	</form>
+        </div>
+	</ion-content>
+</ion-view>

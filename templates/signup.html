@@ -1,0 +1,39 @@
+<ion-view view-title="{{'label.registrazione' | translate}}">
+	<ion-content padding="true" class="has-header" overflow-scroll="true">
+		<div class="list">
+			<ng-include src="'includes/fb_login.html'"></ng-include>
+		</div>
+		<div class="list">
+			<form name="formRegistrami" novalidate="novalidate">
+				<label class="item item-input item-stacked-label" ng-class="{'has-error-lr': formRegistrami.Nickname.$invalid && formRegistrami.$submitted, 'valid-lr': formRegistrami.Nickname.$valid && formRegistrami.$submitted}">
+					<span class="input-label" translate>label.nickname</span>
+					<input type="text" name="Nickname" ng-model="user.nickname" ng-maxlength="200" required>
+				</label>
+				<div class="form-errors" ng-show="nameko && formRegistrami.$submitted" ng-messages="nameko" ng-messages-include="includes/form_errors.html"></div>
+				<div class="form-errors" ng-show="formRegistrami.Nickname.$error && formRegistrami.$submitted" ng-messages="formRegistrami.Nickname.$error" ng-messages-include="includes/form_errors.html"></div>
+				<label class="item item-input item-stacked-label" ng-class="{'has-error-lr': formRegistrami.Email.$invalid && formRegistrami.$submitted, 'valid-lr': formRegistrami.Email.$valid && formRegistrami.$submitted}">
+					<span class="input-label" translate>label.email</span>
+					<input type="email" name="Email" ng-model="user.email" ng-maxlength="200" required>
+				</label>
+				<div class="form-errors" ng-show="formRegistrami.Email.$error && formRegistrami.$submitted" ng-messages="formRegistrami.Email.$error" ng-messages-include="includes/form_errors.html"></div>
+				<label class="item item-input item-stacked-label" ng-class="{'has-error-lr': formRegistrami.ConfirmEmail.$invalid && formRegistrami.$submitted, 'valid-lr': formRegistrami.ConfirmEmail.$valid && formRegistrami.$submitted}">
+					<span class="input-label" translate>label.confirmemail</span>
+					<input type="email" name="ConfirmEmail" ng-model="confirmEmail" ng-maxlength="200" required same-as="user.email">
+				</label>
+				<div class="form-errors" ng-show="formRegistrami.ConfirmEmail.$error && formRegistrami.$submitted" ng-messages="formRegistrami.ConfirmEmail.$error" ng-messages-include="includes/form_errors.html"></div>
+				<label class="item item-input item-stacked-label" ng-class="{'has-error-lr': formRegistrami.Password.$invalid && formRegistrami.$submitted, 'valid-lr': formRegistrami.Password.$valid && formRegistrami.$submitted}">
+					<span class="input-label" translate>label.password</span>
+					<input type="password" name="Password" ng-model="user.password" ng-maxlength="50" required>
+				</label>
+				<div class="form-errors" ng-show="formRegistrami.Password.$error && formRegistrami.$submitted" ng-messages="formRegistrami.Password.$error" ng-messages-include="includes/form_errors.html"></div>
+				<label class="item item-input item-stacked-label" ng-class="{'has-error-lr': formRegistrami.ConfirmPassword.$invalid && formRegistrami.$submitted, 'valid-lr': formRegistrami.ConfirmPassword.$valid && formRegistrami.$submitted}">
+					<span class="input-label" translate>label.confirmpassword</span>
+					<input type="password" name="ConfirmPassword" ng-model="confirmPassword" ng-maxlength="50" required same-as="user.password">
+				</label>
+				<div class="form-errors" ng-show="formRegistrami.ConfirmPassword.$error && formRegistrami.$submitted" ng-messages="formRegistrami.ConfirmPassword.$error" ng-messages-include="includes/form_errors.html"></div>
+				<button class="button button-block button-positive" ng-click="signup(formRegistrami)" translate>button.registrami</button>
+			</form>
+		</div>
+		<p><span translate>label.emailattivazione</span></p>
+	</ion-content>
+</ion-view>

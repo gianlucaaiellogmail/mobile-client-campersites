@@ -1,0 +1,18 @@
+	<div class="dropdown">
+        <div class="list" style="margin-bottom:0 !important">
+			<label class="item item-input" name="Cerca">
+				<i class="icon ion-search placeholder-icon"></i>
+          		<input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="{{type}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>
+			</label>
+		</div>
+        <div id="{{id}}_dropdown" class="list dropdown-content" ng-show="showDropdown">
+        	<div class="item" ng-show="searching" ng-bind="textSearching"></div>
+            <div class="item" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
+            <div class="item" ng-repeat="result in results | limitTo:5" ng-click="selectResult(result)">
+            	<div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
+            	<div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>
+            	<div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
+            	<div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">{{result.description}}</div>
+            </div>
+        </div>
+    </div>    

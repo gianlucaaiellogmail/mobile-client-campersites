@@ -1,0 +1,61 @@
+	<div class="row row-no-padding row-wrap responsive-sm">
+		<div class="col col-50">
+			<div class="list card">
+				<div class="item item-avatar-left item-borderless item-text-wrap">
+			    	<img src="img/icons/cercavicino.png">
+				    <h2 translate>label.cercavicino</h2>
+				    <p translate>desc.cercavicino</p>
+				</div>
+				<div class="item item-borderless item-image padding-left padding-right">
+					<button class="button button-block button-positive" ng-click="goCercaVicino()" translate>button.cerca</button>
+				</div>
+			</div>
+		</div>
+		<div class="col col-50">
+			<div class="list card" ng-if="!$storage.user">
+				<div class="item item-avatar-left item-borderless item-text-wrap">
+			    	<img src="img/icons/user.png">
+				    <h2 translate>label.eseguilogin</h2>
+				    <p translate>desc.eseguilogin</p>
+				</div>
+				<div class="item item-borderless item-image padding-left padding-right">
+					<button class="button button-block button-positive" ng-click="goLogin()" translate>button.login</button>
+				</div>
+			</div>
+			<div class="list card" ng-if="$storage.user">
+				<div class="item item-avatar-left item-borderless item-text-wrap">
+			    	<img src="img/icons/user.png">
+				    <h2>{{::$storage.user.nickname | uppercase}}</h2>
+				    <p translate>desc.menuutente</p>
+				</div>
+				<div class="item item-borderless item-image padding-left padding-right">
+					<button class="button button-block button-positive" ng-click="goUtente()" translate>button.utente</button>
+				</div>
+			</div>
+		</div>
+		<div class="col col-50">
+			<div class="list card">
+				<div class="item item-avatar-left item-borderless item-text-wrap">
+			    	<img src="img/icons/settings.png">
+				    <h2 translate>label.cambiaimpostazioni</h2>
+				    <p translate>desc.cambiaimpostazioni</p>
+				</div>
+				<div class="item item-borderless item-image padding-left padding-right">
+					<button class="button button-block button-positive" ng-click="goSettings()" translate>button.impostazioni</button>
+				</div>
+			</div>
+		</div>
+		<div class="col col-50">
+			<div class="list card">
+				<div class="item item-avatar-left item-borderless item-text-wrap">
+			    	<img src="img/icons/scaricaoffline.png">
+				    <h2 translate>label.scaricaoffline</h2>
+				    <p translate>desc.scaricaoffline</p>
+				</div>
+				<div class="item item-borderless item-image padding-left padding-right">
+					<button class="button button-block button-positive" ng-click="goDownloads()" translate>button.scaricadatimappe</button>
+				</div>
+			</div>
+		</div>
+	</div>
+		
